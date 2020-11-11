@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  version: 3.0-SNAPSHOT
+  title: Demo broken file upload code generation
+tags:
+  - name: image
+    description: Image API
+paths:
+  "/image":
+    post:
+      tags:
+        - image
+      summary: upload images
+      operationId: uploadImages
+      requestBody:
+        $ref: '#/components/requestBodies/FilesUploadRequest'
+      responses:
+        "201":
+          $ref: '#/components/responses/ImagesResponse'
+
+components:
+  requestBodies:
+    FilesUploadRequest:
+      description: Array of files
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              files:
+                type: array
+                items:
+                  type: string
+                  format: binary
+  responses:
+    ImagesResponse:
+      description: Images Uploaded
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Images"
+  schemas:
+    Images:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        size:
+          type: string
+        thumbnailUrl:
+          type: string
+        url:
+          type: string
